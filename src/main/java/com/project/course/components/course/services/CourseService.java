@@ -85,9 +85,8 @@ public class CourseService {
         userCourseRecord.setCourseId(courseId);
 
         UserCourse saved = this.userCourseRepository.save(userCourseRecord);
-        if (saved != null) {
-            jobScheduler.enqueue(() -> this.createUserNotificationRecord(userId, courseName));
-        }
+        jobScheduler.enqueue(() -> this.createUserNotificationRecord(userId, courseName));
+
     }
 
     private void handleExistentCourse(Optional<Course> course, MessageDto message) {
@@ -99,11 +98,6 @@ public class CourseService {
         payload.setCourse_name(courseName);
         payload.setUser_id(userId);
 
-        Message<UserNotificationsDto> KafkaMessage = MessageBuilder.withPayload(payload)
-                .setHeader(KafkaHeaders.TOPIC, TOPIC)
-                .setHeader("__TypeId__", "message")
-                .build();
-
-        kafkaTemplate.send(KafkaMessage);
+        kafkaTemplate.send(TOPIC, payload);
     }
 }

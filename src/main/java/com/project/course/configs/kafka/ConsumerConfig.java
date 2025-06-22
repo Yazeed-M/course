@@ -1,12 +1,11 @@
 package com.project.course.configs.kafka;
 
-import org.apache.kafka.common.serialization.StringDeserializer;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ConsumerConfig {
 

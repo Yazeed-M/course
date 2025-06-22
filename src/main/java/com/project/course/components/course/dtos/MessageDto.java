@@ -5,7 +5,7 @@ public class MessageDto {
         private String courseName;
         private Long userId;
 
-        public MessageDto(){}
+        public MessageDto(){}   
 
         public String getCourseCode() {
             return courseCode;
