@@ -1,0 +1,11 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <include file="file:src/main/resources/db/changelog/create-course-table.xml" />
+    <include file="file:src/main/resources/db/changelog/create-user_courses-table.xml" />
+    <include file="file:src/main/resources/db/changelog/rename-course-column.xml" />
+    <include file="file:src/main/resources/db/changelog/rename-user-course-columns.xml" />
+</databaseChangeLog>
