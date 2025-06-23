@@ -6,6 +6,7 @@ import static org.apache.kafka.common.requests.FetchMetadata.log;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.kafka.common.KafkaException;
 import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -67,9 +68,7 @@ public class CourseService {
             course.setCourseName(dto.getCourseName());
             Course saved = courseRepo.save(course);
 
-            if (saved != null) {
-                jobScheduler.enqueue(() -> this.createRecord(dto.getUserId(), saved.getId(),dto.getCourseName()));
-            }
+            jobScheduler.enqueue(() -> this.createRecord(dto.getUserId(), saved.getId(),dto.getCourseName()));
         } else {
             log.info("the lock is active");
         }
@@ -90,7 +89,16 @@ public class CourseService {
     }
 
     private void handleExistentCourse(Optional<Course> course, MessageDto message) {
-        jobScheduler.enqueue(() -> this.createRecord(message.getUserId(), course.get().getId(), course.get().getCourseName()));
+        try {
+            Optional<UserCourse> checkIfRecordExists = userCourseRepository.findByUserIdAndCourseId(message.getUserId(), course.get().getId());
+            if (checkIfRecordExists.isEmpty()) {
+                jobScheduler.enqueue(() -> this.createRecord(message.getUserId(), course.get().getId(), course.get().getCourseName()));
+            } else {
+                throw new IllegalArgumentException("student already registered");
+            }
+        }catch (KafkaException e){
+            e.printStackTrace();
+        }
     }
 
     public void createUserNotificationRecord(Long userId, String courseName) {

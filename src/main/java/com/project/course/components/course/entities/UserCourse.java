@@ -15,8 +15,8 @@ public class UserCourse {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     
-    private Long user_id;
-    private Long course_id;
+    private Long userId;
+    private Long courseId;
     private LocalDateTime enrolled_at= LocalDateTime.now();;
     
     public UserCourse() {
@@ -24,8 +24,8 @@ public class UserCourse {
     
     public UserCourse(Long id, Long user_id, Long course_id, LocalDateTime enrolled_At) {
         this.id = id;
-        this.user_id = user_id;
-        this.course_id = course_id;
+        this.userId = user_id;
+        this.courseId = course_id;
         this.enrolled_at = enrolled_At;
     }
 
@@ -38,19 +38,19 @@ public class UserCourse {
     }
 
     public Long getUserId() {
-        return user_id;
+        return userId;
     }
 
     public void setUserId(Long user_id) {
-        this.user_id = user_id;
+        this.userId = user_id;
     }
 
     public Long getCourseId() {
-        return course_id;
+        return courseId;
     }
 
     public void setCourseId(Long course_id) {
-        this.course_id = course_id;
+        this.courseId = course_id;
     }
 
     public LocalDateTime getEnrolled_At() {
